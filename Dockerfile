@@ -1,17 +1,10 @@
-# استفاده از یک ایمیج سبک پایتون
 FROM python:3.9-slim
 
-# تعیین دایرکتوری کاری
-WORKDIR /app
+# نصب shadowsocks به جای کتابخانه‌های نامعتبر
+RUN pip install shadowsocks
 
-# نصب پیش‌نیازها
-RUN pip install socks5
+# اجرای مستقیم سرور shadowsocks که یک پراکسی SOCKS5 کامل است
+# این دستور روی پورت ۸۰۰۰ با رمز عبور مشخص اجرا می‌شود
+CMD ["ssserver", "-p", "8000", "-k", "password123", "-m", "aes-256-cfb"]
 
-# کپی کردن اسکریپت به داخل کانتینر
-COPY main.py .
-
-# باز کردن پورت ۸۰۰۰
 EXPOSE 8000
-
-# اجرای اسکریپت
-CMD ["python", "main.py"]
